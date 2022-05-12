@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch Live Stream</title>
+    <!-- Import the stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Import the javascript file -->
+    <script src="/script.js" defer></script>
+    <script
+      defer
+      src="https://ajax.googleapis.com/ajax/libs/shaka-player/3.3.2/shaka-player.compiled.js"
+    ></script>
+    <script defer>
+      // still hardcode from getStream.data.dash_manifest_path -- link from clicked Get stream button
+      const manifestUri = "https://bifrost.inlive.app/streams/50/manifest.mpd";
+
+      function initApp() {
+        shaka.polyfill.installAll();
+
+        if (shaka.Player.isBrowserSupported()) {
+          initPlayer();
+        } else {
+          console.error("Browser not supported!");
+        }
+      }
+
+      async function initPlayer() {
+        const video = document.getElementById("video");
+        const player = new shaka.Player(video);
+
+        window.player = player;
+
+        player.addEventListener("error", onErrorEvent);
+
+        try {
+          await player.load(manifestUri);
+          console.log("The video has now been loaded!");
+        } catch (e) {
+          onError(e);
+        }
+      }
+
+      function onErrorEvent(event) {
+        onError(event.detail);
+      }
+
+      function onError(error) {
+        console.error("Error code", error.code, "object", error);
+      }
+
+      document.addEventListener("DOMContentLoaded", initApp);
+    </script>
+  </head>
+  <body>
+    <h1 class="text-center text-[28px] font-bold my-2">Watch Live Stream</h1>
+    <hr />
+    <div class="flex justify-center items-center">
+      <video
+        autoplay
+        muted
+        controls
+        playsinline
+        id="video"
+        class="w-3/4 border rounded-xl my-4"
+      ></video>
+    </div>
+  </body>
+</html>

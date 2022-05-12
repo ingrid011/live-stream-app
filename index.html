@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Import the stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Import the javascript file -->
+    <script src="/script.js" defer></script>
+    <title>Create Live Stream</title>
+  </head>
+  <body>
+    <h1 class="text-center text-[28px] font-bold my-2">My Live Stream</h1>
+    <hr />
+
+    <!--  create stream name -->
+    <div
+      class="flex flex-col items-center justify-center text-sm"
+      id="createContainer"
+    >
+      <div class="flex items-center justify-center">
+        <p>Type your stream name to create a new stream (optional) :</p>
+        <input
+          type="text"
+          placeholder="Your stream name"
+          id="inputStreamName"
+          class="border rounded-lg border-gray-500 p-2 ml-1 my-4"
+        />
+      </div>
+
+      <!-- create stream id -->
+      <button
+        onclick="createStream()"
+        type="button"
+        aria-label="create-stream"
+        class="cursor-pointer border-2 border-blue-600 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2"
+      >
+        Create Stream
+      </button>
+    </div>
+
+    <div
+      class="hidden flex-col content-center items-center justify-center justify-items-center text-center text-xs"
+      id="mainContainer"
+    >
+      <!--  to view stream name only -->
+      <div id="yourStream" class="text-center mt-2 text-xs"></div>
+      <!--  stream video view -->
+      <video
+        autoplay
+        muted
+        playsinline
+        controls
+        class="w-3/4 border rounded-xl my-4"
+      ></video>
+
+      <div id="streamStatus" class="text-blue-600 my-4"></div>
+
+      <!-- to start streaming -->
+      <button
+        onclick="startStream()"
+        type="button"
+        aria-label="start-stream"
+        id="startStream"
+        class="block cursor-pointer border-2 border-blue-600 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2"
+      >
+        Start Stream
+      </button>
+      <!-- to end streaming from the endpoint -->
+      <button
+        onclick="endStream(createdStreamData?.data?.id)"
+        type="button"
+        aria-label="end-stream"
+        id="endStream"
+        class="hidden cursor-pointer border-2 border-blue-600 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2"
+      >
+        End Stream
+      </button>
+      <!-- to get the video link -- hardcode on live.html -- for viewers to view
+live stream -->
+      <form id="getStream" class="hidden my-4 border border-black rounded-lg">
+        <input
+          type="text"
+          id="getStreamLink"
+          placeholder="Click the button to get stream link"
+          readonly
+          class="p-1 w-[300px] rounded-l-lg"
+        />
+        <button
+          onclick="getStream(createdStreamData?.data?.id, options)"
+          type="button"
+          aria-label="get-stream"
+          class="cursor-pointer border border-black rounded-r-lg bg-gray-300 text-black p-1 hover:bg-gray-400"
+        >
+          Get Stream
+        </button>
+      </form>
+
+      <div id="streamLink" class="my-2 text-xs font-bold"></div>
+    </div>
+
+    <!-- <h2 id="streamEndStatus" class="font-bold text-center my-4"></h2> -->
+  </body>
+</html>
