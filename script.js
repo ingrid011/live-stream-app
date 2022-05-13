@@ -224,6 +224,9 @@ async function getStream(slug, options) {
     navigator.clipboard.writeText(element.value);
     document.getElementById('streamLink').innerHTML =
       '<p>Link copied to clipboard!</p>';
+    document.getElementById(
+      'manifestUriLink'
+    ).innerHTML = `<p>Link manifest uri : ${getStreamVideoData?.data?.dash_manifest_path}</p>`;
 
     return apiResp;
   } catch (err) {
