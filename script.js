@@ -1,9 +1,9 @@
 let options = {
-  origin: "https://api.inlive.app",
-  apiVersion: "v1",
+  origin: 'https://api.inlive.app',
+  apiVersion: 'v1',
   // hardcode API Key
   apiKey:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMzMjA2ODM5ODAzLCJqdGkiOiJiN2Y4YzVmMS0xMmUyLTQ4ZTItYWNlMS0xYzM5YWY3ZTY1M2EiLCJpYXQiOjE2NDkyMzk4MDMsImlzcyI6ImlubGl2ZSIsImRiaWQiOjMsIlRva2VuVHlwZSI6ImFwaWtleSIsIlVzZXIiOnsiaWQiOjEyLCJ1c2VybmFtZSI6IiIsInBhc3N3b3JkIjoiIiwiY29uZmlybV9wYXNzd29yZCI6IiIsIm5hbWUiOiIiLCJsb2dpbl90eXBlIjowLCJlbWFpbCI6IiIsInJvbGVfaWQiOjAsInBpY3R1cmVfdXJsIjoiIiwiaXNfYWN0aXZlIjpmYWxzZSwicmVnaXN0ZXJfZGF0ZSI6IjAwMDEtMDEtMDFUMDA6MDA6MDBaIiwidXBkYXRlZF9kYXRlIjpudWxsfX0.rebFyPbrtDGtyyNCYR11IBAubaNjkooL5NkGmLZrPvI",
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMzMjA2ODM5ODAzLCJqdGkiOiJiN2Y4YzVmMS0xMmUyLTQ4ZTItYWNlMS0xYzM5YWY3ZTY1M2EiLCJpYXQiOjE2NDkyMzk4MDMsImlzcyI6ImlubGl2ZSIsImRiaWQiOjMsIlRva2VuVHlwZSI6ImFwaWtleSIsIlVzZXIiOnsiaWQiOjEyLCJ1c2VybmFtZSI6IiIsInBhc3N3b3JkIjoiIiwiY29uZmlybV9wYXNzd29yZCI6IiIsIm5hbWUiOiIiLCJsb2dpbl90eXBlIjowLCJlbWFpbCI6IiIsInJvbGVfaWQiOjAsInBpY3R1cmVfdXJsIjoiIiwiaXNfYWN0aXZlIjpmYWxzZSwicmVnaXN0ZXJfZGF0ZSI6IjAwMDEtMDEtMDFUMDA6MDA6MDBaIiwidXBkYXRlZF9kYXRlIjpudWxsfX0.rebFyPbrtDGtyyNCYR11IBAubaNjkooL5NkGmLZrPvI',
 };
 let createdStreamData = {};
 let getStreamVideoData = {};
@@ -12,14 +12,14 @@ let getStreamVideoData = {};
 async function apiRequest(apiKey, url, method, body) {
   const opts = {
     method: method,
-    mode: "cors",
+    mode: 'cors',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
   };
 
-  if (typeof body !== "undefined") {
+  if (typeof body !== 'undefined') {
     opts.body = JSON.stringify(body);
   }
 
@@ -36,7 +36,7 @@ async function apiRequest(apiKey, url, method, body) {
 
 function replaceWhiteSpace(s) {
   if (/\s/.test(s)) {
-    return s.split(" ").join("-");
+    return s.split(' ').join('-');
   } else {
     return s;
   }
@@ -46,28 +46,28 @@ function replaceWhiteSpace(s) {
 async function createStream() {
   const url = `${options.origin}/${options.apiVersion}/streams/create`;
   try {
-    const streamName = document.getElementById("inputStreamName").value;
+    const streamName = document.getElementById('inputStreamName').value;
     let checkName;
 
     // random the stream name if not type in the input field
-    if (streamName != "") {
+    if (streamName.trim().length != '') {
       checkName = streamName;
     } else {
       checkName = Math.random().toString(36).slice(5);
     }
 
     // request api
-    const resp = await apiRequest(options.apiKey, url, "POST", {
-      name: streamName != "" ? streamName : checkName,
-      slug: streamName != "" ? replaceWhiteSpace(streamName) : checkName,
+    const resp = await apiRequest(options.apiKey, url, 'POST', {
+      name: streamName != '' ? streamName : checkName,
+      slug: streamName != '' ? replaceWhiteSpace(streamName) : checkName,
     });
     createdStreamData = resp;
 
     // styling - box view
-    document.getElementById("createContainer").style.display = "none";
-    document.getElementById("mainContainer").style.display = "flex";
+    document.getElementById('createContainer').style.display = 'none';
+    document.getElementById('mainContainer').style.display = 'flex';
     document.getElementById(
-      "yourStream"
+      'yourStream'
     ).innerHTML = `Stream name : <b>${createdStreamData?.data?.name}</b>`;
   } catch (err) {
     console.error(err);
@@ -79,15 +79,15 @@ async function prepareStream(slug) {
   const url = `${options.origin}/${options.apiVersion}/streams/${slug}/prepare`;
 
   try {
-    const resp = await apiRequest(options.apiKey, url, "POST");
+    const resp = await apiRequest(options.apiKey, url, 'POST');
 
     //styling
-    document.getElementById("startStream").style.display = "none";
-    document.getElementById("streamStatus").innerHTML =
-      "<b>Preparing stream ...</b>";
+    document.getElementById('startStream').style.display = 'none';
+    document.getElementById('streamStatus').innerHTML =
+      '<b>Preparing stream ...</b>';
 
     if (resp.code !== 200) {
-      throw new Error("Failed to prepare stream session");
+      throw new Error('Failed to prepare stream session');
     }
   } catch (err) {
     console.error(err);
@@ -106,17 +106,17 @@ async function initStream(slug, peerConnection, options) {
   try {
     const url = `${options.origin}/${options.apiVersion}/streams/${slug}/init`;
 
-    const resp = await apiRequest(options.apiKey, url, "POST", body);
+    const resp = await apiRequest(options.apiKey, url, 'POST', body);
 
     if (resp.code === 200) {
       const answerSDP = new RTCSessionDescription(resp.data);
       peerConnection.setRemoteDescription(answerSDP);
 
       //styling
-      document.getElementById("streamStatus").innerHTML =
-        "<b>Streaming is ready!</b>";
+      document.getElementById('streamStatus').innerHTML =
+        '<b>Streaming is ready!</b>';
     } else {
-      throw new Error("Failed to init stream session");
+      throw new Error('Failed to init stream session');
     }
   } catch (error) {
     console.error(error);
@@ -128,21 +128,21 @@ async function initStream(slug, peerConnection, options) {
 async function startStreaming(slug) {
   try {
     const url = `${options.origin}/${options.apiVersion}/streams/${slug}/start`;
-    const resp = await apiRequest(options.apiKey, url, "POST");
+    const resp = await apiRequest(options.apiKey, url, 'POST');
 
     if (resp.code === 200) {
-      console.log("streaming started");
+      console.log('streaming started');
 
       // styling
-      document.getElementById("streamStatus").innerHTML =
-        "<b>Streaming started!</b>";
-      document.getElementById("getStream").style.display = "flex";
-      document.getElementById("startStream").style.display = "none";
-      document.getElementById("endStream").style.display = "block";
+      document.getElementById('streamStatus').innerHTML =
+        '<b>Streaming started!</b>';
+      document.getElementById('getStream').style.display = 'flex';
+      document.getElementById('startStream').style.display = 'none';
+      document.getElementById('endStream').style.display = 'block';
 
       return resp;
     } else {
-      throw new Error("Failed to start stream session");
+      throw new Error('Failed to start stream session');
     }
   } catch (error) {
     console.error(error);
@@ -152,10 +152,10 @@ async function startStreaming(slug) {
 // start stream button
 async function startStream() {
   try {
-    document.getElementById("streamStatus").innerHTML = "<b>Please wait</b>";
+    document.getElementById('streamStatus').innerHTML = '<b>Please wait</b>';
     await prepareStream(createdStreamData?.data?.id);
 
-    const videoEl = document.querySelector("video");
+    const videoEl = document.querySelector('video');
 
     const constraints = {
       video: {
@@ -171,21 +171,21 @@ async function startStream() {
 
     const servers = {
       iceServers: [
-        { urls: "stun:stun.l.google.com:19302" },
+        { urls: 'stun:stun.l.google.com:19302' },
         {
-          urls: "turn:34.101.121.241:3478",
-          username: "username",
-          credential: "password",
+          urls: 'turn:34.101.121.241:3478',
+          username: 'username',
+          credential: 'password',
         },
       ],
     };
 
     const peerConnection = new RTCPeerConnection(servers);
-    console.log("peerConnection", peerConnection);
+    console.log('peerConnection', peerConnection);
 
     peerConnection.oniceconnectionstatechange = () => {
       const iceConnectionState = peerConnection.iceConnectionState;
-      console.log("iceConnectionState", iceConnectionState);
+      console.log('iceConnectionState', iceConnectionState);
     };
 
     peerConnection.onicecandidate = async (event) => {
@@ -210,17 +210,20 @@ async function startStream() {
 async function getStream(slug, options) {
   try {
     const url = `${options.origin}/${options.apiVersion}/streams/${slug}`;
-    const apiResp = await apiRequest(options.apiKey, url, "GET");
+    const apiResp = await apiRequest(options.apiKey, url, 'GET');
     getStreamVideoData = apiResp;
 
-    // copy the get stream link to clipboard when click the button
-    let element = document.getElementById("getStreamLink");
-    element.value = getStreamVideoData?.data?.dash_manifest_path;
+    // copy the live stream link to clipboard when click the button
+    let element = document.getElementById('getStreamLink');
+    console.log('cek', getStreamVideoData?.data);
+    let urlLive = new URL('https://live-stream-app.glitch.me/live.html?id=1');
+    urlLive.searchParams.set('id', getStreamVideoData?.data?.id);
+    element.value = urlLive;
     element.select();
     element.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(element.value);
-    document.getElementById("streamLink").innerHTML =
-      "<p>Link copied to clipboard!</p>";
+    document.getElementById('streamLink').innerHTML =
+      '<p>Link copied to clipboard!</p>';
 
     return apiResp;
   } catch (err) {
@@ -233,10 +236,10 @@ async function getStream(slug, options) {
 async function endStream(slug) {
   try {
     const url = `${options.origin}/${options.apiVersion}/streams/${slug}/end`;
-    const apiResp = await apiRequest(options.apiKey, url, "POST");
+    const apiResp = await apiRequest(options.apiKey, url, 'POST');
 
     // if success, then will show an alert stream has ended and will reload to the initial view
-    alert("Streaming ended!");
+    alert('Streaming ended!');
     window.location.reload();
 
     return apiResp;

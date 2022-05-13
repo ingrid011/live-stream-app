@@ -16,8 +16,10 @@
       src="https://ajax.googleapis.com/ajax/libs/shaka-player/3.3.2/shaka-player.compiled.js"
     ></script>
     <script defer>
-      // still hardcode from getStream.data.dash_manifest_path -- link from clicked Get stream button
-      const manifestUri = "https://bifrost.inlive.app/streams/50/manifest.mpd";
+      // get the id parameter from the url link for the manifestUri
+      let params = new URL(document.location).searchParams;
+      let streamId = params.get('id');
+      const manifestUri = `https://bifrost.inlive.app/streams/${streamId}/manifest.mpd`;
 
       function initApp() {
         shaka.polyfill.installAll();
@@ -25,21 +27,21 @@
         if (shaka.Player.isBrowserSupported()) {
           initPlayer();
         } else {
-          console.error("Browser not supported!");
+          console.error('Browser not supported!');
         }
       }
 
       async function initPlayer() {
-        const video = document.getElementById("video");
+        const video = document.getElementById('video');
         const player = new shaka.Player(video);
 
         window.player = player;
 
-        player.addEventListener("error", onErrorEvent);
+        player.addEventListener('error', onErrorEvent);
 
         try {
           await player.load(manifestUri);
-          console.log("The video has now been loaded!");
+          console.log('The video has now been loaded!');
         } catch (e) {
           onError(e);
         }
@@ -50,10 +52,10 @@
       }
 
       function onError(error) {
-        console.error("Error code", error.code, "object", error);
+        console.error('Error code', error.code, 'object', error);
       }
 
-      document.addEventListener("DOMContentLoaded", initApp);
+      document.addEventListener('DOMContentLoaded', initApp);
     </script>
   </head>
   <body>
