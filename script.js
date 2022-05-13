@@ -1,9 +1,8 @@
 let options = {
   origin: 'https://api.inlive.app',
   apiVersion: 'v1',
-  // hardcode API Key
-  apiKey:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMzMjA2ODM5ODAzLCJqdGkiOiJiN2Y4YzVmMS0xMmUyLTQ4ZTItYWNlMS0xYzM5YWY3ZTY1M2EiLCJpYXQiOjE2NDkyMzk4MDMsImlzcyI6ImlubGl2ZSIsImRiaWQiOjMsIlRva2VuVHlwZSI6ImFwaWtleSIsIlVzZXIiOnsiaWQiOjEyLCJ1c2VybmFtZSI6IiIsInBhc3N3b3JkIjoiIiwiY29uZmlybV9wYXNzd29yZCI6IiIsIm5hbWUiOiIiLCJsb2dpbl90eXBlIjowLCJlbWFpbCI6IiIsInJvbGVfaWQiOjAsInBpY3R1cmVfdXJsIjoiIiwiaXNfYWN0aXZlIjpmYWxzZSwicmVnaXN0ZXJfZGF0ZSI6IjAwMDEtMDEtMDFUMDA6MDA6MDBaIiwidXBkYXRlZF9kYXRlIjpudWxsfX0.rebFyPbrtDGtyyNCYR11IBAubaNjkooL5NkGmLZrPvI',
+  // dynamic API Key based on input
+  apiKey: '',
 };
 let createdStreamData = {};
 let getStreamVideoData = {};
@@ -39,6 +38,19 @@ function replaceWhiteSpace(s) {
     return s.split(' ').join('-');
   } else {
     return s;
+  }
+}
+
+// input own API Key
+function inputAPIKey() {
+  let a = document.getElementById('userAPIKey').value;
+  if (a != '') {
+    options.apiKey = a;
+    document.getElementById('createContainer').style.display = 'flex';
+    document.getElementById('apiContainer').style.display = 'none';
+  } else {
+    document.getElementById('warningAPIKey').innerHTML =
+      '<b>Please input your API Key</b>';
   }
 }
 
@@ -215,7 +227,6 @@ async function getStream(slug, options) {
 
     // copy the live stream link to clipboard when click the button
     let element = document.getElementById('getStreamLink');
-    console.log('cek', getStreamVideoData?.data);
     let urlLive = new URL('https://live-stream-app.glitch.me/live.html?id=1');
     urlLive.searchParams.set('id', getStreamVideoData?.data?.id);
     element.value = urlLive;

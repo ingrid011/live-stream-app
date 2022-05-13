@@ -15,10 +15,40 @@
   <body>
     <h1 class="text-center text-[28px] font-bold my-2">My Live Stream</h1>
     <hr />
+    <!--  input own API -->
+    <div
+      class="flex flex-col items-center justify-center text-sm"
+      id="apiContainer"
+    >
+      <p class="mt-6 text-md"> To get your API Key, kindly login here :
+        <a href="https://studio.inlive.app/login" aria-label="login-studio" class="text-blue-500">studio.inlive.app</a>
+        and read README.md file on how to get it
+      </p>    
+      <div class="flex items-center justify-center">
+        <p>Input your API key :</p>
+        <input
+          type="text"
+          placeholder="Your API Key"
+          id="userAPIKey"
+          class="border rounded-lg border-gray-500 p-2 ml-1 my-4"
+        />
+      </div>
+      <div id="warningAPIKey" class="my-2 text-xs text-red-600 font-bold"></div>
+
+      <!-- add own API Key -->
+      <button
+        onclick="inputAPIKey()"
+        type="button"
+        aria-label="create-stream"
+        class="cursor-pointer border-2 border-blue-600 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2"
+      >
+        Submit
+      </button>
+    </div>
 
     <!--  create stream name -->
     <div
-      class="flex flex-col items-center justify-center text-sm"
+      class="hidden flex-col items-center justify-center text-sm"
       id="createContainer"
     >
       <div class="flex items-center justify-center">
