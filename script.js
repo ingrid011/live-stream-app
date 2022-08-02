@@ -75,12 +75,20 @@ async function createStream() {
     });
     createdStreamData = resp;
 
-    // styling - box view
     document.getElementById('createContainer').style.display = 'none';
-    document.getElementById('mainContainer').style.display = 'flex';
-    document.getElementById(
-      'yourStream'
-    ).innerHTML = `Stream name : <b>${createdStreamData?.data?.name}</b>`;
+    if (createdStreamData.code === 200) {
+      // styling - box view
+      document.getElementById('mainContainer').style.display = 'flex';
+      document.getElementById(
+        'yourStream'
+      ).innerHTML = `Stream name : <b>${createdStreamData?.data?.name}</b>`;
+    } else {
+      // styling - box view
+      document.getElementById('mainContainerError').style.display = 'flex';
+      document.getElementById(
+        'createStreamErrMessage'
+      ).innerHTML = `<b>Something wrong!</b> <b style="color:red;">${createdStreamData?.message}</b>`;
+    }
   } catch (err) {
     console.error(err);
   }

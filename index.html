@@ -20,10 +20,16 @@
       class="flex flex-col items-center justify-center text-sm"
       id="apiContainer"
     >
-      <p class="mt-6 text-md"> To get your API Key, kindly login here :
-        <a href="https://studio.inlive.app/login" aria-label="login-studio" class="text-blue-500">studio.inlive.app</a>
+      <p class="mt-6 text-md">
+        To get your API Key, kindly login here :
+        <a
+          href="https://studio.inlive.app/login"
+          aria-label="login-studio"
+          class="text-blue-500"
+          >studio.inlive.app</a
+        >
         and read README.md file on how to get it
-      </p>    
+      </p>
       <div class="flex items-center justify-center">
         <p>Input your API key :</p>
         <input
@@ -70,6 +76,14 @@
       >
         Create Stream
       </button>
+    </div>
+
+    <div
+      class="hidden flex-col content-center items-center justify-center justify-items-center text-center text-base"
+      id="mainContainerError"
+    >
+      <!--  to view error message of createStream func -->
+      <h1 id="createStreamErrMessage" class="text-center mt-2"></h1>
     </div>
 
     <div
