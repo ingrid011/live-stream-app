@@ -235,7 +235,8 @@ async function getStream(slug, options) {
 
     // copy the live stream link to clipboard when click the button
     let element = document.getElementById('getStreamLink');
-    let urlLive = new URL('https://live-stream-app.glitch.me/live.html?id=1');
+    const currentURL = window.location.origin;
+    let urlLive = new URL(`${currentURL}/live.html?id=1`);
     urlLive.searchParams.set('id', getStreamVideoData?.data?.id);
     element.value = urlLive;
     element.select();
